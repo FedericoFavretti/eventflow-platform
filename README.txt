@@ -1,6 +1,6 @@
 1-REQUISITOS
-#TENER DOCKER DESKTOP ABIERTO
-#ESTAR EN EL DIRECTORIO /eventflow-platform o raiz del proyecto
+##TENER DOCKER DESKTOP ABIERTO
+##ESTAR EN EL DIRECTORIO /eventflow-platform o raiz del proyecto
 
 2-
 # Dar permisos de ejecución a los scripts

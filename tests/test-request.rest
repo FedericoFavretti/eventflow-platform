@@ -1,0 +1,49 @@
+### Health Check
+GET http://localhost:3001/health
+
+### Crear Usuario 1
+POST http://localhost:3001/api/usuarios
+Content-Type: application/json
+
+{
+  "tipo_documento": "DNI",
+  "nro_documento": "3456",
+  "nombre": "feasdde",
+  "apellido": "Perez",
+  "email": "fedeasdffasddsaa@example.com"
+}
+
+### Crear Usuario 2
+POST http://localhost:3001/api/usuarios
+Content-Type: application/json
+
+{
+  "tipo_documento": "Pasaporte",
+  "nro_documento": "AB123456",
+  "nombre": "Maria",
+  "apellido": "Gonzalez",
+  "email": "maria@example.com"
+}
+
+### Obtener todos los usuarios (debería venir de cache después de primera llamada)
+GET http://localhost:3001/api/usuarios
+
+### exportar todos los usuarios
+GET http://localhost:3001/api/usuarios/exportar
+
+### Obtener usuario específico (cacheado)
+GET http://localhost:3001/api/usuarios/1
+
+### Actualizar usuario (debería invalidar cache)
+PUT http://localhost:3001/api/usuarios/AB123456
+Content-Type: application/json
+
+{
+  "nombre": "Juan Carlos"
+}
+
+### Ver cache invalido (nueva llamada debería ir a DB)
+GET http://localhost:3001/api/usuarios
+
+### borrar usuario por id
+DELETE http://localhost:3001/api/usuarios/2 

@@ -1,0 +1,9 @@
+target/
+.mvn/
+.m2/
+.git
+.gitignore
+README.md
+.DS_Store
+*.iml
+.idea

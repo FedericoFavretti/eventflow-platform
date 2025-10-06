@@ -1,0 +1,20 @@
+### Health Check
+GET http://localhost:3001/health
+
+### Crear Usuario
+POST http://localhost:3001/api/usuarios
+Content-Type: application/json
+
+{
+  "tipo_documento": "DNI",
+  "nro_documento": "12345678",
+  "nombre": "Juan",
+  "apellido": "Perez",
+  "email": "juan@example.com"
+}
+
+### Obtener todos los usuarios
+GET http://localhost:3001/api/usuarios
+
+### Obtener usuario por ID
+GET http://localhost:3001/api/usuarios/1
