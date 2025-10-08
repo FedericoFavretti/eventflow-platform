@@ -28,7 +28,11 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - eventflow-network
-
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   # Redis
   redis:
     image: redis:6-alpine
@@ -56,24 +60,26 @@ services:
     networks:
       - eventflow-network
 
-  # Event Service (comentado)
-  # event-service:
-  #   build:
-  #     context: ./event-service
-  #     dockerfile: Dockerfile
-  #   container_name: eventflow-event-service
-  #   ports:
-  #     - "3002:3002"
-  #   environment:
-  #     - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventflow
-  #     - SERVER_PORT=3002
-  #     - SPRING_PROFILES_ACTIVE=docker
-  #   depends_on:
-  #     mongo:
-  #       condition: service_healthy
-  #   networks:
-  #     - eventflow-network
-  #   restart: unless-stopped
+  # Event Service (Spring Boot)
+  event-service:
+    build:
+      context: ./event-service
+      dockerfile: Dockerfile
+    container_name: eventflow-event-service
+    ports:
+      - "3002:3002"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eventflow
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SERVER_PORT=3002
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - eventflow-network
+    restart: unless-stopped
 
   # Reservation Service con todas las dependencias (comentado)
   # reservation-service:

@@ -1,5 +1,5 @@
 # Etapa de construcción con Maven
-FROM maven:3.8.6-openjdk-11 AS builder
+FROM maven:3.9.3-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Etapa final con JRE
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
