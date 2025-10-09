@@ -9,4 +9,7 @@ Content-Type: application/json
 }
 
 ### Obtener evento
-GET http://localhost:3002/api/eventos/4
+GET http://localhost:3002/api/eventos/1
+
+### 🆕 Obtener todos los eventos
+GET http://localhost:3002/api/eventos

@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.eventflow.eventservice.model.Evento;
 import com.eventflow.eventservice.repository.EventoRepository;
+import java.util.List;
 
 import java.util.Optional;
 
@@ -31,5 +32,12 @@ public class EventoController {
         Optional<Evento> evento = eventoRepository.findById(id);
         return evento.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());
+    }
+
+    // 🆕 GET /api/eventos - Devuelve todos los eventos
+    @GetMapping
+    public ResponseEntity<List<Evento>> obtenerTodosLosEventos() {
+        List<Evento> eventos = eventoRepository.findAll();
+        return ResponseEntity.ok(eventos);
     }
 }

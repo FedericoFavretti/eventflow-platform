@@ -5,7 +5,7 @@ echo "🚀 Iniciando EventFlow Platform..."
 docker-compose down
 
 # Construir y levantar SOLO los servicios que tenemos
-docker-compose up -d --build mongo postgres redis user-service
+docker-compose up -d --build mongo postgres redis user-service event-service
 
 echo "⏳ Esperando que los servicios estén listos..."
 sleep 5
