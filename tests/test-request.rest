@@ -7,10 +7,10 @@ Content-Type: application/json
 
 {
   "tipo_documento": "DNI",
-  "nro_documento": "3456",
+  "nro_documento": "64536345",
   "nombre": "feasdde",
   "apellido": "Perez",
-  "email": "fedeasdffasddsaa@example.com"
+  "email": "sadasdsafsdf@example.com"
 }
 
 ### Crear Usuario 2
