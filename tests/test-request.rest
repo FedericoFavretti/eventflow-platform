@@ -7,10 +7,10 @@ Content-Type: application/json
 
 {
   "tipo_documento": "DNI",
-  "nro_documento": "3456",
+  "nro_documento": "3453426",
   "nombre": "feasdde",
   "apellido": "Perez",
-  "email": "fedeasdffasddsaa@example.com"
+  "email": "fedeasdfgsdfgdffasddsaa@example.com"
 }
 
 ### Crear Usuario 2
@@ -46,4 +46,4 @@ Content-Type: application/json
 GET http://localhost:3001/api/usuarios
 
 ### borrar usuario por id
-DELETE http://localhost:3001/api/usuarios/2 
+DELETE http://localhost:3001/api/usuarios/12 

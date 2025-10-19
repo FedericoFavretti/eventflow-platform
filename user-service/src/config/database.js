@@ -19,10 +19,10 @@ class Database {
             });
 
             await this.redisClient.connect();
-            console.log('✅ Conectado a Redis');
+            console.log('Conectado a Redis');
             return this.redisClient;
         } catch (error) {
-            console.error('❌ Error conectando a Redis:', error);
+            console.error('Error conectando a Redis:', error);
             throw error;
         }
     }
@@ -35,10 +35,10 @@ class Database {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             });
-            console.log('✅ Conectado a MongoDB');
+            console.log('Conectado a MongoDB');
             return this.mongoConnection;
         } catch (error) {
-            console.error('❌ Error conectando a MongoDB:', error);
+            console.error('Error conectando a MongoDB:', error);
             throw error;
         }
     }

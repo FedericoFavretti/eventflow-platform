@@ -13,10 +13,10 @@ app.use(express.json());
 // Inicializar bases de datos
 database.initialize()
     .then(() => {
-        console.log('🗃️ Bases de datos inicializadas');
+        console.log('Bases de datos inicializadas');
     })
     .catch((error) => {
-        console.error('❌ Error inicializando bases de datos:', error);
+        console.error('Error inicializando bases de datos:', error);
         process.exit(1);
     });
 
@@ -39,17 +39,17 @@ app.get('/health', async (req, res) => {
 
 // Manejo graceful shutdown
 process.on('SIGINT', async () => {
-    console.log('🛑 Apagando servicio...');
+    console.log('Apagando servicio...');
     await database.disconnect();
     process.exit(0);
 });
 
 // Iniciar servidor
 app.listen(PORT, () => {
-    console.log(`🚀 User Service running on port ${PORT}`);
-    console.log(`📊 Health check: http://localhost:${PORT}/health`);
-    console.log(`🗃️ Redis: ${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || 6379}`);
-    console.log(`🗃️ MongoDB: ${process.env.MONGO_URI || 'mongodb://localhost:27017/eventflow'}`);
+    console.log(`User Service running on port ${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/health`);
+    console.log(`Redis: ${process.env.REDIS_HOST || 'localhost'}:${process.env.REDIS_PORT || 6379}`);
+    console.log(`MongoDB: ${process.env.MONGO_URI || 'mongodb://localhost:27017/eventflow'}`);
 });
 
 module.exports = app;

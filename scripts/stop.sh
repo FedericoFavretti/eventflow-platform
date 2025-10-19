@@ -1,6 +1,6 @@
 #!/bin/bash
-echo "🛑 Deteniendo EventFlow Platform..."
+echo "   Deteniendo EventFlow Platform..."
 
 docker compose down
 
-echo "✅ Servicios detenidos correctamente"
+echo "   Servicios detenidos correctamente"

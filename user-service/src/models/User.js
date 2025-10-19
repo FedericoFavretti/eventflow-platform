@@ -49,7 +49,7 @@ userSchema.statics.findByCachedId = async function(id) {
     try {
         const cachedUser = await database.redisClient.get(cacheKey);
         if (cachedUser) {
-            console.log('📦 Usuario obtenido de Redis cache');
+            console.log('Usuario obtenido de Redis cache');
             return JSON.parse(cachedUser);
         }
     } catch (error) {
@@ -79,7 +79,7 @@ userSchema.statics.findAllCached = async function() {
     try {
         const cachedUsers = await database.redisClient.get(cacheKey);
         if (cachedUsers) {
-            console.log('📦 Lista de usuarios obtenida de Redis cache');
+            console.log('Lista de usuarios obtenida de Redis cache');
             return JSON.parse(cachedUsers);
         }
     } catch (error) {
@@ -127,7 +127,7 @@ userSchema.post('save', function() {
     cacheKeys.forEach(async (key) => {
         try {
             await database.redisClient.del(key);
-            console.log(`🗑️ Cache invalidado: ${key}`);
+            console.log(`Cache invalidado: ${key}`);
         } catch (error) {
             console.warn('Error al invalidar cache:', error);
         }
@@ -153,7 +153,7 @@ userSchema.statics.findByDocumentoAndUpdate = async function(nro_documento, upda
         cacheKeys.forEach(async (key) => {
             try {
                 await database.redisClient.del(key);
-                console.log(`🗑️ Cache invalidado: ${key}`);
+                console.log(`Cache invalidado: ${key}`);
             } catch (error) {
                 console.warn('Error al invalidar cache:', error);
             }
@@ -163,29 +163,35 @@ userSchema.statics.findByDocumentoAndUpdate = async function(nro_documento, upda
 };
 
 userSchema.statics.deleteUserById = async function(id) {
-    const user = await this.findOne({ id });
-    if (!user) {
-        return null;
-    }else{
-        await user.deleteOne();
+    try {
+        const user = await this.findById(id);
+        if (!user) {
+            return null;
+        }
 
-        const cacheKeys = [`user:${user._id}`, 'users:all'];
-        cacheKeys.forEach(async (key) => {
+        await this.deleteOne({ _id: id });
+
+        // Invalidar cache
+        const cacheKeys = [`user:${id}`, 'users:all'];
+        for (const key of cacheKeys) {
             try {
                 await database.redisClient.del(key);
-                console.log(`🗑️ Cache invalidado: ${key}`);
+                console.log(`Cache invalidado: ${key}`);
             } catch (error) {
                 console.warn('Error al invalidar cache:', error);
             }
-        });   
+        }
+        
         return user;
+    } catch (error) {
+        console.error('Error en deleteUserById:', error);
+        throw error;
     }
-
 };
 
 userSchema.statics.checkExistingUser = async function(email, nro_documento) {
     try {
-        console.log(`🔍 Verificando existencia de usuario: email=${email}, doc=${nro_documento}`);
+        console.log(`Verificando existencia de usuario: email=${email}, doc=${nro_documento}`);
         
         // Buscar usuarios que coincidan con email O nro_documento
         const existingUsers = await this.find({
@@ -196,7 +202,7 @@ userSchema.statics.checkExistingUser = async function(email, nro_documento) {
         });
 
         if (existingUsers.length === 0) {
-            console.log('✅ No se encontraron usuarios duplicados');
+            console.log('No se encontraron usuarios duplicados');
             return null;
         }
 
@@ -219,10 +225,10 @@ userSchema.statics.checkExistingUser = async function(email, nro_documento) {
             }
         });
 
-        console.log(`❌ Usuario duplicado encontrado: email=${result.byEmail}, doc=${result.byDocument}`);
+        console.log(`Usuario duplicado encontrado: email=${result.byEmail}, doc=${result.byDocument}`);
         return result;
     } catch (error) {
-        console.error('❌ Error verificando usuario existente:', error);
+        console.error('Error verificando usuario existente:', error);
         throw error;
     }
 };

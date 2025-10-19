@@ -66,7 +66,7 @@ class UserController {
             });
 
             await newUser.save();
-            console.log('✅ Usuario creado con ID:', newUser._id);
+            console.log('Usuario creado con ID:', newUser._id);
 
             res.status(201).json({
                 message: 'Usuario creado exitosamente',
@@ -82,7 +82,7 @@ class UserController {
             });
 
         } catch (error) {
-            console.error('❌ Error en createUser:', error);
+            console.error('Error en createUser:', error);
             
             // Manejar error de duplicado de MongoDB (por si acaso)
             if (error.code === 11000) {
@@ -139,27 +139,6 @@ class UserController {
         } 
     }
 
-/*
-    static async getUserByDocumento(req, res) {
-        try {
-            const {nro_documento} = req.params;
-            if (!nro_documento) {
-                return res.status(400).json({error: 'numero de documento es requerido'});
-            }else{
-                const user = await User.findOne({nro_documento });
-                if (!user) {
-                    return res.status(404).json({ error: 'Usuario no encontrado' });
-                }else{
-                    res.json({ user });
-                }
-            }
-            
-        } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
-        }
-    }
-*/
-
     static async getUserById(req, res) {
         try {
             const user = await User.findByCachedId(req.params.id);
@@ -202,16 +181,34 @@ class UserController {
     static async deleteUser(req, res) {
         try {
             const { id } = req.params;
-            const user = await User.findByCachedId(id);
+            
+            // Convertir id a número (porque _id es numérico)
+            const userId = parseInt(id);
+            if (isNaN(userId)) {
+                return res.status(400).json({ error: 'ID inválido' });
+            }
 
+            const user = await User.findByCachedId(userId);
             if (!user) {
                 return res.status(404).json({ error: 'Usuario no encontrado' });
-            }else{
-                User.deleteUserById(id);
-                res.json({ message: 'Usuario eliminado exitosamente' });
             }
+
+            await User.deleteUserById(userId);
+            
+            res.json({ 
+                message: 'Usuario eliminado exitosamente',
+                usuario_eliminado: {
+                    id: user._id,
+                    nombre: user.nombre,
+                    email: user.email
+                }
+            });
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            console.error('Error en deleteUser:', error);
+            res.status(500).json({ 
+                error: 'Error interno del servidor',
+                detalle: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
         }
     }
 }
