@@ -5,7 +5,7 @@ echo "🚀 Iniciando EventFlow Platform..."
 docker-compose down
 
 # Construir y levantar SOLO los servicios que tenemos
-docker-compose up -d --build mongo postgres redis user-service
+docker-compose up -d --build mongo postgres redis user-service event-service reservation-service
 
 echo "⏳ Esperando que los servicios estén listos..."
 sleep 5
@@ -24,7 +24,9 @@ docker-compose ps
 
 echo "✅ Servicios base iniciados correctamente"
 echo "📝 URLs de los servicios:"
-echo "   User Service: http://localhost:3001"
+echo "   User Service: http://localhost:3001/api/usuarios"
+echo "   Event Service: http://localhost:3002/api/eventos"
+echo "   Reservation Service: http://localhost:3003/api/reservations"
 echo "   MongoDB: localhost:27017"
 echo "   PostgreSQL: localhost:5432"
 echo "   Redis: localhost:6379"
