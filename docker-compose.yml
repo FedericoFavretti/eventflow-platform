@@ -56,54 +56,53 @@ services:
     networks:
       - eventflow-network
 
-  # Event Service (comentado)
-  # event-service:
-  #   build:
-  #     context: ./event-service
-  #     dockerfile: Dockerfile
-  #   container_name: eventflow-event-service
-  #   ports:
-  #     - "3002:3002"
-  #   environment:
-  #     - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventflow
-  #     - SERVER_PORT=3002
-  #     - SPRING_PROFILES_ACTIVE=docker
-  #   depends_on:
-  #     mongo:
-  #       condition: service_healthy
-  #   networks:
-  #     - eventflow-network
-  #   restart: unless-stopped
+  event-service:
+    build:
+      context: ./event-service
+      dockerfile: Dockerfile
+    container_name: eventflow-event-service
+    ports:
+      - "3002:3002"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventflow
+      - SERVER_PORT=3002
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mongo:
+        condition: service_healthy
+    networks:
+      - eventflow-network
+    restart: unless-stopped
 
-  # Reservation Service con todas las dependencias (comentado)
-  # reservation-service:
-  #   build:
-  #     context: ./reservation-service
-  #     dockerfile: Dockerfile
-  #   container_name: eventflow-reservation-service
-  #   ports:
-  #     - "3003:3003"
-  #   environment:
-  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eventflow
-  #     - SPRING_DATASOURCE_USERNAME=postgres
-  #     - SPRING_DATASOURCE_PASSWORD=postgres
-  #     - SPRING_REDIS_HOST=redis
-  #     - USER_SERVICE_URL=http://user-service:3001
-  #     - EVENT_SERVICE_URL=http://event-service:3002
-  #     - SERVER_PORT=3003
-  #     - SPRING_PROFILES_ACTIVE=docker
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #     redis:
-  #       condition: service_healthy
-  #     user-service:
-  #       condition: service_healthy
-  #     event-service:
-  #       condition: service_started
-  #   networks:
-  #     - eventflow-network
-  #   restart: unless-stopped
+
+  reservation-service:
+    build:
+      context: ./reservation-service
+      dockerfile: Dockerfile
+    container_name: eventflow-reservation-service
+    ports:
+      - "3003:3003"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/eventflow
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_REDIS_HOST=redis
+      - USER_SERVICE_URL=http://user-service:3001
+      - EVENT_SERVICE_URL=http://event-service:3002
+      - SERVER_PORT=3003
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      event-service:
+        condition: service_started
+    networks:
+      - eventflow-network
+    restart: unless-stopped
 
 volumes:
   mongo_data:
