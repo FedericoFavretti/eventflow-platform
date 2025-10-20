@@ -16,6 +16,15 @@ class UserController {
                 });
             }
 
+            // Validar tipo de documento
+            const validDocuments = ['DNI', 'Pasaporte', 'Cédula'];
+            if (!validDocuments.includes(tipo_documento)) {
+                return res.status(400).json({
+                    error: 'Tipo de documento inválido',
+                    tipos_permitidos: validDocuments
+                });
+            }
+
             // Validar formato de email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
@@ -160,6 +169,13 @@ class UserController {
             const { nro_documento } = req.params;
             const updateData = req.body;
 
+            // Validar que no se intente actualizar nro_documento
+            if (updateData.nro_documento && updateData.nro_documento !== nro_documento) {
+                return res.status(400).json({ 
+                    error: 'No se puede modificar el número de documento' 
+                });
+            }
+
             const user = await User.findByDocumentoAndUpdate(nro_documento, updateData, { 
                 new: true, 
                 runValidators: true 
@@ -174,7 +190,11 @@ class UserController {
                 user: user
             });
         } catch (error) {
-            res.status(500).json({ error: 'Error interno del servidor' });
+            console.error('❌ Error en updateUser:', error);
+            res.status(500).json({ 
+                error: 'Error interno del servidor',
+                detalle: process.env.NODE_ENV === 'development' ? error.message : undefined
+            });
         }
     }
 
