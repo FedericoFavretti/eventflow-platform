@@ -1,0 +1,15 @@
+### Crear evento
+POST http://localhost:3002/api/eventos
+Content-Type: application/json
+
+{
+  "nombre": "nombre del Evento 5",
+  "descripcion": "Descripcion del evento",
+  "aforoTotal": 234
+}
+
+### Obtener evento
+GET http://localhost:3002/api/eventos/1
+
+### 🆕 Obtener todos los eventos
+GET http://localhost:3002/api/eventos
