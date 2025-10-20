@@ -1,0 +1,9 @@
+### Crear Usuario 1
+POST http://localhost:3003/api/reservations
+Content-Type: application/json
+
+{
+  "customerName": "nombre",
+  "servicetype": "evento",
+  "reservationDate": "2005-05-05T05:05:05.000Z",
+}
