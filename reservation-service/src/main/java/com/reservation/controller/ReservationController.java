@@ -21,8 +21,23 @@ public class ReservationController {
     }
 
     // POST → crear una nueva reserva
-    @PostMapping
-    public Reservation createReservation(@RequestBody Reservation reservation) {
-        return reservationRepository.save(reservation);
+    @PostMapping("/api/reservations")
+    public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
+        Reservation saved = reservationRepository.save(reservation);
+
+        // Llamar al Payment Service
+        try {
+            PaymentResponse payment = paymentClient.processPayment(saved);
+            if (payment.isSuccessful()) {
+                saved.setPaymentStatus(PaymentStatus.COMPLETED);
+            } else {
+                saved.setPaymentStatus(PaymentStatus.FAILED);
+            }
+        } catch (Exception e) {
+            saved.setPaymentStatus(PaymentStatus.FAILED);
+        }
+
+        reservationRepository.save(saved);
+        return ResponseEntity.ok(saved);
     }
 }

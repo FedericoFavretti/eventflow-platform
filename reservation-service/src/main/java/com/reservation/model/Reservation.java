@@ -21,6 +21,9 @@ public class Reservation {
     @NotNull
     private LocalDateTime reservationDate;
 
+    @NotNull
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
     // Constructor vacío (necesario para JPA)
     public Reservation() {}
 
