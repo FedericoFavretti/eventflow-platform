@@ -2,17 +2,17 @@
 echo "🚀 Iniciando EventFlow Platform..."
 
 # Eliminar contenedores existentes si los hay
-docker-compose down
+docker compose down
 
 # Construir y levantar SOLO los servicios que tenemos
-docker-compose up -d --build mongo postgres redis user-service event-service reservation-service
+docker compose up -d --build mongo postgres redis user-service event-service reservation-service
 
 echo "⏳ Esperando que los servicios estén listos..."
 sleep 5
 
 # Verificar estado de los servicios
 echo "📊 Estado de los servicios:"
-docker-compose ps
+docker compose ps
 
 # Esperar adicionalmente para el user-service
 echo "⏳ Esperando que User Service esté listo..."
@@ -20,7 +20,7 @@ sleep 5
 
 # Verificar health checks
 echo "🏥 Verificando salud de los servicios:"
-docker-compose ps
+docker compose ps
 
 echo "✅ Servicios base iniciados correctamente"
 echo "📝 URLs de los servicios:"

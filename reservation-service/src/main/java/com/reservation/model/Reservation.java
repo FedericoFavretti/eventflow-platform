@@ -21,6 +21,10 @@ public class Reservation {
     @NotNull
     private LocalDateTime reservationDate;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
     // Constructor vacío (necesario para JPA)
     public Reservation() {}
 
@@ -58,5 +62,13 @@ public class Reservation {
 
     public void setReservationDate(LocalDateTime reservationDate) {
         this.reservationDate = reservationDate;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 }
