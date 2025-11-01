@@ -53,4 +53,12 @@ public class ReservationController {
 
         return ResponseEntity.ok(saved);
     }
+
+    // GET → obtener reserva por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Reservation> getReservationById(@PathVariable Long id) {
+        return reservationRepository.findById(id)
+            .map(reservation -> ResponseEntity.ok(reservation))
+            .orElse(ResponseEntity.notFound().build());
+    }
 }
