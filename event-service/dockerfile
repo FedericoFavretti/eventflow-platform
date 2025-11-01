@@ -13,24 +13,25 @@ RUN mvn clean package -DskipTests
 # Etapa final con JRE
 FROM eclipse-temurin:17-jre
 
+# Set workdir
 WORKDIR /app
 
-# Instalar wait-for-it
-RUN apt-get update && apt-get install -y wait-for-it && rm -rf /var/lib/apt/lists/*
+# Install curl only and keep image small
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
-# Crear usuario no root
+# Create non-root user and copy artifact with correct ownership
 RUN groupadd -r spring && useradd -r -g spring spring
+COPY --from=builder --chown=spring:spring /app/target/*.jar app.jar
 USER spring
 
-# Copiar JAR desde la etapa de construcción
-COPY --from=builder /app/target/*.jar app.jar
-
-# Exponer puerto
+# Expose port
 EXPOSE 3002
 
 # Variables de entorno
 ENV SPRING_PROFILES_ACTIVE=docker
 ENV SERVER_PORT=3002
 
-# Comando de inicio
+# Healthcheck will be handled by docker-compose (actuator endpoint)
+
+# Start
 ENTRYPOINT ["java", "-jar", "app.jar"]

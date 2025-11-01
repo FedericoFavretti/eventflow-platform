@@ -1,9 +1,40 @@
-### Crear Usuario 1
+### Health Check
+GET http://localhost:3003/health
+
+### Crear reserva (1)
 POST http://localhost:3003/api/reservations
 Content-Type: application/json
 
 {
-  "customerName": "nombre",
-  "servicetype": "evento",
-  "reservationDate": "2005-05-05T05:05:05.000Z",
+  "customerName": "Juan Perez",
+  "serviceType": "evento",
+  "reservationDate": "2025-11-01T10:00:00Z"
 }
+
+### Crear reserva (2)
+POST http://localhost:3003/api/reservations
+Content-Type: application/json
+
+{
+  "customerName": "Maria Gomez",
+  "serviceType": "conferencia",
+  "reservationDate": "2025-12-15T18:30:00Z"
+}
+
+### Listar todas las reservas
+GET http://localhost:3003/api/reservations
+
+### Obtener reserva por id (ajusta el id según la respuesta anterior)
+GET http://localhost:3003/api/reservations/1
+
+### Actualizar estado de pago manualmente (opcional)
+PATCH http://localhost:3003/api/reservations/1/payment
+Content-Type: application/json
+
+{
+  "paymentStatus": "COMPLETED"
+}
+
+### Borrar reserva (opcional)
+DELETE http://localhost:3003/api/reservations/1
+
