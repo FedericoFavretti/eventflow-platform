@@ -14,6 +14,7 @@ public class EventoController {
 
     private final EventoRepository eventoRepository;
 
+    // Constructor - inyección de dependencia
     public EventoController(EventoRepository eventoRepository) {
         this.eventoRepository = eventoRepository;
     }
@@ -21,9 +22,9 @@ public class EventoController {
     // POST /api/eventos - Crea un nuevo evento
     @PostMapping
     public ResponseEntity<Evento> crearEvento(@RequestBody Evento evento) {
-        evento.setAforoDisponible(evento.getAforoTotal());
-        Evento nuevo = eventoRepository.save(evento);
-        return ResponseEntity.ok(nuevo);
+        evento.setAforoDisponible(evento.getAforoTotal()); // Inicializa el aforo disponible
+        Evento nuevo = eventoRepository.save(evento); // Guarda el evento en la base de datos
+        return ResponseEntity.ok(nuevo); // Devuelve el evento creado
     }
 
     // GET /api/eventos/{evento_id} - Recupera un evento y su aforo disponible

@@ -2,12 +2,14 @@ package com.eventflow.eventservice.model;
 
 import jakarta.persistence.*;
 
+// Entidad JPA que representa un evento
 @Entity
-@Table(name = "eventos")
+@Table(name = "eventos") // Mapea la clase a la tabla "eventos" en la base de datos
 public class Evento {
-
+    
+    // Atributos de la entidad Evento
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Generacion automatica del ID autoincremental
     private Long id;
 
     private String nombre;
